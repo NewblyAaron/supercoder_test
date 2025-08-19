@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:supercoder_test/app/modules/campaign/campaign_tab_item.dart';
+import 'package:supercoder_test/app/modules/campaign/widgets/campaign_tab_item.dart';
 
 class CampaignTabView extends StatelessWidget {
   const CampaignTabView({super.key});
