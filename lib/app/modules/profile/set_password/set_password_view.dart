@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supercoder_test/app/modules/profile/set_password/set_password_controller.dart';
 import 'package:supercoder_test/app/modules/profile/widgets/profile_text_form_field.dart';
-import 'package:supercoder_test/app/utils/app_theme.dart';
+import 'package:supercoder_test/app/app_theme.dart';
 
 class ProfileSetPasswordView extends StatefulWidget {
   const ProfileSetPasswordView({super.key});

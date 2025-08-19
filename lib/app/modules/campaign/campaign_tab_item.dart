@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:supercoder_test/app/utils/app_theme.dart';
+import 'package:supercoder_test/app/app_theme.dart';
 
 class CampaignTabItem extends StatelessWidget {
   const CampaignTabItem({super.key});

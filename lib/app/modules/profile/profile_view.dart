@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supercoder_test/app/modules/profile/profile_controller.dart';
-import 'package:supercoder_test/app/utils/app_theme.dart';
+import 'package:supercoder_test/app/app_theme.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});

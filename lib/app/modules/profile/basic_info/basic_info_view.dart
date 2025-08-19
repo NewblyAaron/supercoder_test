@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supercoder_test/app/modules/profile/basic_info/basic_info_controller.dart';
 import 'package:supercoder_test/app/modules/profile/widgets/profile_text_form_field.dart';
-import 'package:supercoder_test/app/utils/app_theme.dart';
+import 'package:supercoder_test/app/app_theme.dart';
 
 class ProfileBasicInfoView extends StatefulWidget {
   const ProfileBasicInfoView({super.key});
