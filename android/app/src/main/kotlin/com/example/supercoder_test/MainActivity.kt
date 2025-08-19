@@ -1,11 +1,15 @@
 package com.example.supercoder_test
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Bundle
 import android.provider.OpenableColumns
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -13,9 +17,11 @@ import java.io.File
 import java.io.IOException
 
 class MainActivity : FlutterFragmentActivity() {
-    private val CHANNEL = "native_file_service"
+    private val FILE_SERVICE_CHANNEL = "native_file_service"
+    private val PERMISSION_SERVICE_CHANNEL = "native_permission_service"
 
     private var pendingResult: MethodChannel.Result? = null
+    private var permissionResult: MethodChannel.Result? = null
 
     private val pickImageLauncher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -43,10 +49,16 @@ class MainActivity : FlutterFragmentActivity() {
                 pendingResult = null
             }
 
+    private val requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+                isGranted: Boolean ->
+                    permissionResult?.success(isGranted)
+            }
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler {
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, FILE_SERVICE_CHANNEL).setMethodCallHandler {
                 call,
                 result ->
             when (call.method) {
@@ -86,6 +98,28 @@ class MainActivity : FlutterFragmentActivity() {
                         }
                     } else {
                         result.error("INVALID_ARGUMENT", "File identifier is null", null)
+                    }
+                }
+                else -> result.notImplemented()
+            }
+        }
+
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, PERMISSION_SERVICE_CHANNEL).setMethodCallHandler {
+                call,
+                result ->
+            when (call.method) {
+                "checkPermission" -> {
+                    val permission = call.argument<String>("permission")!!
+                    val granted = ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+                    result.success(granted)
+                }
+                "requestPermission" -> {
+                    val permission = call.argument<String>("permission")!!
+                    if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
+                        result.success(true)
+                    } else {
+                        permissionResult = result
+                        requestPermissionLauncher.launch(permission)
                     }
                 }
                 else -> result.notImplemented()
